@@ -29,11 +29,20 @@ function scrollFloorView(){
 	if(1200 < ling && ling < 1600) { //第一层的数字隐藏，文字显示，其他兄弟元素的li数字显示，文字隐藏
 		$("#floor-index ul li").eq(0).find(".num").hide().siblings(".word").css("display", "block");
 		$("#floor-index ul li").eq(0).siblings("li").find(".num").css("display", "block").siblings(".word").hide();
-	} else if(ling < 1800) {
+	} else if(ling < 2000) {
 		$("#floor-index ul li").eq(1).find(".num").hide().siblings(".word").css("display", "block");
 		$("#floor-index ul li").eq(1).siblings("li").find(".num").css("display", "block").siblings(".word").hide();
-	}
-	if(ling > 2500 || ling < 1200) {
+	} else if(ling < 2400) {
+        $("#floor-index ul li").eq(2).find(".num").hide().siblings(".word").css("display", "block");
+        $("#floor-index ul li").eq(2).siblings("li").find(".num").css("display", "block").siblings(".word").hide();
+    } else if(ling < 2800) {
+        $("#floor-index ul li").eq(3).find(".num").hide().siblings(".word").css("display", "block");
+        $("#floor-index ul li").eq(3).siblings("li").find(".num").css("display", "block").siblings(".word").hide();
+    } else if(ling < 3200) {
+        $("#floor-index ul li").eq(4).find(".num").hide().siblings(".word").css("display", "block");
+        $("#floor-index ul li").eq(4).siblings("li").find(".num").css("display", "block").siblings(".word").hide();
+    }
+	if(ling > 3200 || ling < 1200) {
 		$("#floor-index").hide();
 	}
 }
