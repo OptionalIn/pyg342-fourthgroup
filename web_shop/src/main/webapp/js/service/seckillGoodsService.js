@@ -21,6 +21,10 @@ app.service('seckillGoodsService',function($http){
 	this.update=function(entity){
 		return  $http.post('../seckillGoods/update.do',entity );
 	}
+	//提交审核
+    this.toCheck=function(ids){
+        return $http.get('../seckillGoods/toCheck.do?ids='+ids);
+    }
 	//删除
 	this.dele=function(ids){
 		return $http.get('../seckillGoods/delete.do?ids='+ids);
@@ -28,5 +32,15 @@ app.service('seckillGoodsService',function($http){
 	//搜索
 	this.search=function(page,rows,searchEntity){
 		return $http.post('../seckillGoods/search.do?page='+page+"&rows="+rows, searchEntity);
-	}    	
+	}
+
+    //根据该卖家查询所有商品
+    this.findGoodsBySellerId=function(){
+        return $http.get('../goods/findGoodsBySellerId.do?');
+    }
+
+    //根据goodsId查询所有库存列表
+    this.findByGoodsId=function(goodsId){
+        return $http.get('../goods/findByGoodsId.do?goodsId='+goodsId);
+    }
 });
