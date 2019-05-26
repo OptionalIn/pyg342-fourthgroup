@@ -226,6 +226,42 @@ public class GoodsServiceImpl implements  GoodsService {
     }
 
     /**
+     * 根据商家id，查询所有商品
+     * @param sellerId
+     * @return
+     */
+    @Override
+    public List<Goods> findGoodsBySellerId(String sellerId) {
+        if (sellerId != null) {
+            GoodsQuery query = new GoodsQuery();
+            GoodsQuery.Criteria criteria = query.createCriteria();
+            criteria.andSellerIdEqualTo(sellerId);
+            List<Goods> goodsList = goodsDao.selectByExample(query);
+            return goodsList;
+        }
+        return null;
+    }
+
+
+    /**
+     * 根据goodsId查询所有库存列表
+     * @param goodsId
+     * @return
+     */
+    @Override
+    public List<Item> findByGoodsId(Long goodsId) {
+        if (goodsId != null) {
+            ItemQuery query = new ItemQuery();
+            ItemQuery.Criteria criteria = query.createCriteria();
+            criteria.andGoodsIdEqualTo(goodsId);
+
+            List<Item> itemList = itemDao.selectByExample(query);
+            return itemList;
+        }
+        return null;
+    }
+
+    /**
      * 设置库存对象的属性
      * @param item          需要设置的库存对象
      * @param goodsEntity   页面传入的商品实体对象
