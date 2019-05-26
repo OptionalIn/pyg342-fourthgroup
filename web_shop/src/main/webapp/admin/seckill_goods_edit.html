@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>秒杀商品编辑</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+  
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+
+   <!--引入日期选择插件-->
+	<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript" src="../js/bootstrap-datetimepicker.zh-CN.js"></script>
+
+	<link href="../plugins/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+
+	<!-- 引入angular -->
+	<script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+    
+    <script type="text/javascript" src="../js/base.js"></script>
+
+    <script type="text/javascript" src="../js/service/goodsService.js"></script>  
+    <script type="text/javascript" src="../js/service/itemCatService.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/goodsController.js"></script>
+    
+    
+</head>
+
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="goodsController" ng-init="selectItemCat1List();findOne()">
+
+            <!-- 正文区域 -->
+            <section class="content">
+
+                <div class="box-body">
+
+                    <!--tab页-->
+                    <div class="nav-tabs-custom">
+
+                        <!--tab头-->
+                        <ul class="nav nav-tabs">                       		
+                            <li class="active">
+                                <a href="#home" data-toggle="tab">秒杀商品信息</a>
+                            </li>
+                        </ul>
+                        <!--tab头/-->
+						
+                        <!--tab内容-->
+                        <div class="tab-content">
+
+                            <!--表单内容-->
+                            <div class="tab-pane active" id="home">
+                                <div class="row data-type">                                  
+								   <div class="col-md-2 title">秒杀商品</div>
+		                          
+		                           	  <div class="col-md-10 data">
+		                           	  	<table>
+		                           	  		<tr>
+		                           	  			<td>
+		                           	  				<select class="form-control" ng-model="entity.goods.category1Id" ng-options="item.id as item.name for item in itemCat1List">													
+		                           	  				</select>
+		                              			</td>
+												<td>
+													商品ID:{{entity.goods.typeTemplateId}}
+												</td>
+		                           	  		</tr>
+		                           	  	</table>
+		                              </div>
+
+									<div class="col-md-2 title">库存选择</div>
+									<div class="col-md-10 data">
+										<table>
+											<tr>
+												<td>
+													<select class="form-control" ng-model="entity.goods.category1Id" ng-options="item.id as item.name for item in itemCat1List">
+													</select>
+												</td>
+												<td>
+													库存ID:{{entity.goods.typeTemplateId}}
+												</td>
+											</tr>
+										</table>
+									</div>
+
+		
+								   <div class="col-md-2 title">标题</div>
+		                           <div class="col-md-10 data">
+		                               <input type="text" ng-model="entity.goods.caption"  class="form-control"   placeholder="标题" value="">
+		                           </div>
+		                           
+		                           <div class="col-md-2 title">秒杀价格</div>
+		                           <div class="col-md-10 data">
+		                           	   <div class="input-group">
+			                          	   <span class="input-group-addon">¥</span>
+			                               <input type="text"ng-model="entity.goods.price"   class="form-control"  placeholder="秒杀价格" value="">
+		                           	   </div>
+		                           </div>
+
+									<div class="col-md-2 title">秒杀开始时间</div>
+									<div class="col-md-10 data">
+										<div class="input-append date form_datetime" data-date="2013-02-21T15:25:00Z">
+											<input size="25" type="text" value="" readonly>
+											<span class="add-on"><i class="icon-remove"></i></span>
+											<span class="add-on"><i class="icon-calendar"></i></span>
+										</div>
+
+										<script type="text/javascript">
+                                            $(".form_datetime").datetimepicker({
+                                                language:  'zh-CN',  //日期
+                                                format: "yyyy年mm月dd日 hh:ii",
+                                                startDate: "2019-06-01 10:00",
+												autoclose: true,
+                                                todayBtn: true,
+                                                minuteStep: 30
+                                            });
+										</script>
+									</div>
+
+									<div class="col-md-2 title">秒杀结束时间</div>
+									<div class="col-md-10 data">
+										<div class="input-append date form_datetime" data-date="2013-02-21T15:25:00Z">
+											<input size="25" type="text" value="" readonly>
+											<span class="add-on"><i class="icon-remove"></i></span>
+											<span class="add-on"><i class="icon-calendar"></i></span>
+										</div>
+
+										<script type="text/javascript">
+                                            $(".form_datetime").datetimepicker({
+                                                language:  'zh-CN',  //日期
+                                                format: "yyyy年mm月dd日 hh:ii",
+                                                startDate: "2019-06-01 10:00",
+                                                autoclose: true,
+                                                todayBtn: true,
+                                                minuteStep: 30
+                                            });
+										</script>
+									</div>
+
+									<div class="col-md-2 title">秒杀商品数量</div>
+									<div class="col-md-10 data">
+										<input type="text"ng-model="entity.goods.price"   class="form-control"  placeholder="秒杀商品数量" value="">
+									</div>
+                                  
+                                    
+                                </div>
+                            </div>
+
+
+                            
+                        </div>
+                        <!--tab内容/-->
+						<!--表单内容/-->
+							 
+                    </div>
+                 	
+
+                   </div>
+                  <div class="btn-toolbar list-toolbar">
+				      <button class="btn btn-primary" ng-click="save()"><i class="fa fa-save"></i>保存商品</button>
+				      <button class="btn btn-default" >返回列表</button>
+				  </div>
+			
+            </section>
+       
+</body>
+
+</html>
