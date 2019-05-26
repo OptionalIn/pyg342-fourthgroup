@@ -27,4 +27,20 @@ public interface SeckillGoodsService {
      * @param ids
      */
     void toCheck(Long[] ids);
+
+    /**
+     * 查询所有未审核秒杀产品
+     * @param seckillGoods
+     * @param page
+     * @param rows
+     * @return
+     */
+    PageResult findAllNoCheck(SeckillGoods seckillGoods, Integer page, Integer rows);
+
+    /**
+     * 批量审核
+     * @param ids
+     * @param status
+     */
+    void updateStatus(Long[] ids, String status);
 }

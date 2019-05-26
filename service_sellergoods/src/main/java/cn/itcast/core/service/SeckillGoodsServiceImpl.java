@@ -66,6 +66,7 @@ public class SeckillGoodsServiceImpl implements SeckillGoodsService {
 
     /**
      * 批量提交审核
+     *
      * @param ids
      */
     @Override
@@ -78,10 +79,56 @@ public class SeckillGoodsServiceImpl implements SeckillGoodsService {
 
                 SeckillGoods seckillGoods = new SeckillGoods();
                 seckillGoods.setStatus("0");
-                seckillGoodsDao.updateByExampleSelective(seckillGoods,query);
+                seckillGoodsDao.updateByExampleSelective(seckillGoods, query);
             }
         }
     }
+
+    /**
+     * 批量审核秒杀商品申请
+     * @param ids
+     * @param status
+     */
+    @Override
+    public void updateStatus(Long[] ids, String status) {
+        if (ids != null) {
+            for (Long id : ids) {
+                SeckillGoodsQuery query = new SeckillGoodsQuery();
+                SeckillGoodsQuery.Criteria criteria = query.createCriteria();
+                criteria.andIdEqualTo(id);
+
+                SeckillGoods seckillGoods = new SeckillGoods();
+                seckillGoods.setStatus(status);
+                seckillGoodsDao.updateByExampleSelective(seckillGoods, query);
+            }
+        }
+    }
+
+
+    /**
+     * 查询所有未审核的秒杀商品申请
+     *
+     * @param seckillGoods
+     * @param page
+     * @param rows
+     * @return
+     */
+    @Override
+    public PageResult findAllNoCheck(SeckillGoods seckillGoods, Integer page, Integer rows) {
+        PageHelper.startPage(page, rows);
+        //创建查询条件对象
+        SeckillGoodsQuery query = new SeckillGoodsQuery();
+        //创建where条件对象
+        SeckillGoodsQuery.Criteria criteria = query.createCriteria();
+        if (seckillGoods != null) {
+            //根据账户名称精确查询自己添加的商品, 如果是管理员账户则查询所有商品
+            criteria.andStatusEqualTo("0");
+            Page<SeckillGoods> seckillGoodsList = (Page<SeckillGoods>) seckillGoodsDao.selectByExample(query);
+            return new PageResult(seckillGoodsList.getTotal(), seckillGoodsList.getResult());
+        }
+        return null;
+    }
+
 
     /**
      * 抽取封装数据的方法
@@ -90,7 +137,7 @@ public class SeckillGoodsServiceImpl implements SeckillGoodsService {
      * @return
      */
     private SeckillGoods getSeckillGoods(SeckillEntity seckillEntity) {
-        if (seckillEntity!= null){
+        if (seckillEntity != null) {
             SeckillGoods seckillGoods = seckillEntity.getSeckillGoods();
             //获取goods对象
             Long goodsId = seckillEntity.getGoods().getId();
