@@ -53,4 +53,9 @@ public class ItemCatServiceImpl implements  ItemCatService {
     public List<ItemCat> findAll() {
         return catDao.selectByExample(null);
     }
+
+    @Override
+    public void add(ItemCat itemCat) {
+        catDao.insertSelective(itemCat);
+    }
 }
