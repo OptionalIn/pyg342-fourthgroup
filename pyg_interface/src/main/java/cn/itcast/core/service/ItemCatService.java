@@ -13,4 +13,8 @@ public interface ItemCatService {
     public List<ItemCat> findAll();
 
     public void add(ItemCat itemCat);
+
+    public List<ItemCat> findRedisItemCat();
+
+    public void saveToMysql(Integer[] ids);
 }

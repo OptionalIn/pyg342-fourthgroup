@@ -1,5 +1,6 @@
 package cn.itcast.core.controller;
 
+import cn.itcast.core.pojo.entity.Result;
 import cn.itcast.core.pojo.item.ItemCat;
 import cn.itcast.core.service.ItemCatService;
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -29,9 +30,21 @@ public class ItemCatController {
         return list;
     }
 
-    @RequestMapping("/findAll")
-    public List<ItemCat> findAll() {
-        List<ItemCat> all = catService.findAll();
+    @RequestMapping("/findRedisItemCat")
+    public List<ItemCat> findRedisItemCat() {
+        List<ItemCat> all = catService.findRedisItemCat();
         return all;
+    }
+
+    @RequestMapping("/saveToMysql")
+    public Result saveToMysql(Integer[] ids){
+        try {
+            catService.saveToMysql(ids);
+            return new Result(true,"审核成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,"审核失败");
+
+        }
     }
 }

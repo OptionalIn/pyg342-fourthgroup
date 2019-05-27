@@ -21,4 +21,6 @@ public interface Constants {
     public final static String REDIS_CITIESLIST = "citiesList";
     public final static String REDIS_AREASLIST = "areasList";
 
+    public final static String REDIS_WEISHEN_CATEGORYLIST = "weishenCategoryList";
+
 }

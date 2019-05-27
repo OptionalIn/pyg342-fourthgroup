@@ -115,7 +115,14 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
     }
 
 
-
+    //读取列表数据绑定到表单中
+        $scope.findRedisItemCat=function(){
+            itemCatService.findRedisItemCat().success(
+                function(response){
+                    $scope.list=response;
+                }
+            );
+        }
 
 
 

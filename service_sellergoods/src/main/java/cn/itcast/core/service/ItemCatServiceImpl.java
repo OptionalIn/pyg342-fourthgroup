@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
-public class ItemCatServiceImpl implements  ItemCatService {
+public class ItemCatServiceImpl implements ItemCatService {
 
     @Autowired
     private ItemCatDao catDao;
@@ -54,8 +56,63 @@ public class ItemCatServiceImpl implements  ItemCatService {
         return catDao.selectByExample(null);
     }
 
+    /**
+     * 分类申请  存入Redis中
+     *
+     * @param itemCat 所添加的分类对象
+     */
     @Override
     public void add(ItemCat itemCat) {
-        catDao.insertSelective(itemCat);
+        redisTemplate.boundHashOps(Constants.REDIS_WEISHEN_CATEGORYLIST).put(itemCat.getName(), itemCat.getTypeId());
+    }
+
+    /**
+     * 从redis中获取分类申请对象
+     *
+     * @return
+     */
+    @Override
+    public List<ItemCat> findRedisItemCat() {
+        List<ItemCat> itemCatList = new ArrayList<>();
+        Set keys = redisTemplate.boundHashOps(Constants.REDIS_WEISHEN_CATEGORYLIST).keys();
+        for (Object key : keys) {
+            Long typeId = (Long) redisTemplate.boundHashOps(Constants.REDIS_WEISHEN_CATEGORYLIST).get(key);
+            ItemCat itemCat = new ItemCat();
+            itemCat.setName(String.valueOf(key));
+            itemCat.setTypeId(typeId);
+            itemCatList.add(itemCat);
+        }
+        return itemCatList;
+    }
+
+    /**
+     * 分类审核 把分类数据存入mysql数据库中
+     *
+     * @param itemCat
+     */
+    @Override
+    public void saveToMysql(Integer[] ids) {
+        List<ItemCat> itemCatList = new ArrayList<>();
+        Set keys = redisTemplate.boundHashOps(Constants.REDIS_WEISHEN_CATEGORYLIST).keys();
+        for (Object key : keys) {
+            Long typeId = (Long) redisTemplate.boundHashOps(Constants.REDIS_WEISHEN_CATEGORYLIST).get(key);
+            ItemCat itemCat1 = new ItemCat();
+            itemCat1.setName(String.valueOf(key));
+            itemCat1.setTypeId(typeId);
+            itemCatList.add(itemCat1);
+        }
+        if (ids != null) {
+            for (Integer id : ids) {
+
+                int i = catDao.insertSelective(itemCatList.get(id));
+
+                if (i == 1) {
+                    redisTemplate.boundHashOps(Constants.REDIS_WEISHEN_CATEGORYLIST).delete(itemCatList.get(id).getName());
+
+                }
+            }
+
+        }
+
     }
 }
