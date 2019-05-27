@@ -74,7 +74,8 @@
 			                              </th> 
 										  <th class="sorting_asc">秒杀订单ID</th>
 										  <th class="sorting_asc">秒杀商品ID</th>
-                                          <th class="sorting">秒杀价格</th>
+										  <th class="sorting">卖家ID</th>
+										  <th class="sorting">秒杀价格</th>
 									      <th class="sorting">买家ID</th>
 									      <th class="sorting">订单创建时间</th>
 									      <th class="sorting">订单支付时间</th>
@@ -91,6 +92,7 @@
 			                              <td><input ng-click="updateSelection($event,entity.id)" type="checkbox"></td>
 				                          <td>{{entity.id}}</td>
 									      <td>{{entity.seckillId}}</td>
+									      <td>{{entity.sellerId}}</td>
 									      <td>{{entity.money}}</td>
 									      <td>{{entity.userId}}</td>
 									      <td>{{entity.createTime}}</td>
