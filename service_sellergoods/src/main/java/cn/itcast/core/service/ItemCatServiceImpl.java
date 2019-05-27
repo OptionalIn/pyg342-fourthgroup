@@ -99,6 +99,7 @@ public class ItemCatServiceImpl implements ItemCatService {
             ItemCat itemCat1 = new ItemCat();
             itemCat1.setName(String.valueOf(key));
             itemCat1.setTypeId(typeId);
+            itemCat1.setParentId(0L);
             itemCatList.add(itemCat1);
         }
         if (ids != null) {

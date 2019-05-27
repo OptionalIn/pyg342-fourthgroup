@@ -58,8 +58,9 @@ app.controller('itemCatController' ,function($scope,$controller ,$location  ,ite
             function(response){
                 if(response.success){
                     alert(response.message);
-                    //重新查询
-                    $scope.reloadList();
+                    // //重新查询
+                    // $scope.reloadList();
+					location.href= "goodsCategory.html";
                 }else{
                     alert(response.message);
                 }
