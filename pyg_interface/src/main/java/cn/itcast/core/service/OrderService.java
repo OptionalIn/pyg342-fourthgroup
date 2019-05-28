@@ -3,8 +3,11 @@ package cn.itcast.core.service;
 import cn.itcast.core.pojo.entity.BuyerCart;
 import cn.itcast.core.pojo.log.PayLog;
 import cn.itcast.core.pojo.order.Order;
+import org.joda.time.DateTime;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface OrderService {
 
@@ -24,4 +27,7 @@ public interface OrderService {
      * @param transaction_id    交易号, 微信给我们返回的
      */
     public void updateOrderStatus(String out_trade_no,String transaction_id);
+
+
+    public Map<String,Double> findSaleData(String start, String end, String sellerId);
 }

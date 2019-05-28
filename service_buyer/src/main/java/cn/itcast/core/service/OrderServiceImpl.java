@@ -7,17 +7,18 @@ import cn.itcast.core.pojo.entity.BuyerCart;
 import cn.itcast.core.pojo.log.PayLog;
 import cn.itcast.core.pojo.order.Order;
 import cn.itcast.core.pojo.order.OrderItem;
+import cn.itcast.core.pojo.order.OrderQuery;
 import cn.itcast.core.util.Constants;
 import cn.itcast.core.util.IdWorker;
 import com.alibaba.dubbo.config.annotation.Service;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 @Transactional
@@ -154,5 +155,51 @@ public class OrderServiceImpl implements OrderService {
          */
         redisTemplate.boundHashOps(Constants.REDIS_PAYLOG).delete(payLog.getUserId());
 
+    }
+
+
+    @Override
+    public Map<String, Double> findSaleData( String start, String end, String sellerId) {
+        Map<String, Double> map = new HashMap();
+        try {
+            //根据用户名，开始时间，结束时间查询订单
+            OrderQuery example = new OrderQuery();
+            OrderQuery.Criteria criteria = example.createCriteria();
+            //将String 转换成Date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date dateStart = dateFormat.parse(start);
+            Date dateEnd = dateFormat.parse(end);
+            //添加日期查询条件
+            criteria.andPaymentTimeBetween(dateStart, dateEnd);
+            //添加商家id查询条件
+            criteria.andSellerIdEqualTo(sellerId);
+            List<Order> orderList = orderDao.selectByExample(example);
+            //确保有数据再去订单明细表里查询数量
+            if (orderList != null && orderList.size() > 0) {
+                //遍历订单集合，查询每个订单的销售数量
+                for (Order order : orderList) {
+                    Date paymentTime = order.getPaymentTime();
+                    //Date换成String
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    String dateStr = sdf.format(paymentTime);
+                    //获取支付金额
+                    BigDecimal payment = order.getPayment();
+                    if(map.containsKey(dateStr)){
+                        //累加销售额
+                        map.put(dateStr,payment.doubleValue()+map.get(dateStr));
+                    }else {
+                        map.put(dateStr,payment.doubleValue());
+                    }
+                }
+            } else {
+                return new HashMap();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new HashMap();
+        }
+        System.out.println(map);
+        return map;
     }
 }
