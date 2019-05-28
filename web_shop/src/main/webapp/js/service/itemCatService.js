@@ -33,4 +33,10 @@ app.service('itemCatService',function($http){
 	this.findByParentId = function(parentId){
 		return $http.get("../itemCat/findByParentId.do?parentId="+parentId);
 	}
+
+
+    // //读取列表数据绑定到表单中
+    // this.findRedisItemCat=function(){
+    //     return $http.get('../itemCat/findRedisItemCat.do');
+    // }
 });

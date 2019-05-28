@@ -1,5 +1,5 @@
  //控制层 
-app.controller('itemCatController' ,function($scope,$controller   ,itemCatService){	
+app.controller('itemCatController' ,function($scope,$controller ,$location  ,itemCatService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -50,6 +50,23 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 			}		
 		);				
 	}
+
+    //保存
+    $scope.saveToMysql=function(){
+
+        itemCatService.saveToMysql( $scope.selectIds).success(
+            function(response){
+                if(response.success){
+                    alert(response.message);
+                    // //重新查询
+                    // $scope.reloadList();
+					location.href= "goodsCategory.html";
+                }else{
+                    alert(response.message);
+                }
+            }
+        );
+    }
 	
 	 
 	//批量删除 
@@ -107,15 +124,23 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 		
 		$scope.findByParentId(p_entity.id);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-    
+
+
+    //读取列表数据绑定到表单中
+    $scope.findRedisItemCat=function(){
+        itemCatService.findRedisItemCat().success(
+            function(response){
+                $scope.list=response;
+            }
+        );
+    }
+
+
+
+
+
+
+
+
+
 });	
