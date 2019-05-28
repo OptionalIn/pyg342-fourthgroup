@@ -27,4 +27,10 @@ public interface SeckillOrderDao {
     int updateByPrimaryKeySelective(SeckillOrder record);
 
     int updateByPrimaryKey(SeckillOrder record);
+
+    //查询总条数
+    Integer findTotalCount(String userId);
+
+    //查询该页数据
+    List<SeckillOrder> findByPage(String userId, Integer startIndex, Integer pageSize);
 }

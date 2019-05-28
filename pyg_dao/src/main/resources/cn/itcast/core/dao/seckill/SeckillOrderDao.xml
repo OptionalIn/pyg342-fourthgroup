@@ -325,4 +325,19 @@
       transaction_id = #{transactionId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <!--根据用户名查询总条数-->
+  <select id="findTotalCount" resultType="java.lang.Integer">
+    SELECT count(1) FROM tb_seckill_order WHERE user_id=#{userName}
+  </select>
+
+  <!--分页查询数据-->
+  <select id="findByPage" resultType="cn.itcast.core.pojo.seckill.SeckillOrder">
+    SELECT id id, seckill_id seckillId, money,
+      user_id userId, seller_id sellerId, create_time createTime,
+      pay_time payTime, status, receiver_address receiverAddress,
+      receiver_mobile receiverMobile, receiver, transaction_id transactionId
+       FROM tb_seckill_order WHERE user_id=#{param1} limit #{param2},#{param3}
+  </select>
+
 </mapper>
