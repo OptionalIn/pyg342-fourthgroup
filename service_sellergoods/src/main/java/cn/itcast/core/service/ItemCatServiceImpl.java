@@ -87,8 +87,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 
     /**
      * 分类审核 把分类数据存入mysql数据库中
-     *
-     * @param itemCat
+     * @param ids
      */
     @Override
     public void saveToMysql(Integer[] ids) {
